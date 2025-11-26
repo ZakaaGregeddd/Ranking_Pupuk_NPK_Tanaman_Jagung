@@ -37,10 +37,22 @@ import os
 # Load Data Real Anda
 df_alternatif = load_and_clean_data('data/data_pupuk.csv')
 
-# Export hasil preprocessing ke CSV di folder 'data'
+
+# Normalisasi min-max untuk kolom numerik
+numerik_cols = ['C1_Harga', 'C2_N', 'C3_P', 'C4_K', 'C5_Bentuk']
+df_normalized = df_alternatif.copy()
+for col in numerik_cols:
+	min_val = df_normalized[col].min()
+	max_val = df_normalized[col].max()
+	if max_val > min_val:
+		df_normalized[col] = (df_normalized[col] - min_val) / (max_val - min_val)
+	else:
+		df_normalized[col] = 0  # Jika semua nilai sama
+
+# Export hasil numerikalisasi & normalisasi ke CSV di folder 'data'
 preprocessed_csv_path = 'data/preprocessed_pupuk.csv'
-df_alternatif[['merk', 'C1_Harga', 'C2_N', 'C3_P', 'C4_K', 'C5_Bentuk']].to_csv(preprocessed_csv_path, index=False)
-print(f"Hasil preprocessing diekspor ke {preprocessed_csv_path}")
+df_normalized[['merk'] + numerik_cols].to_csv(preprocessed_csv_path, index=False)
+print(f"Hasil preprocessing (numerik & normalisasi) diekspor ke {preprocessed_csv_path}")
 
 # Pastikan folder results dan results/plots ada
 os.makedirs('results/plots', exist_ok=True)
