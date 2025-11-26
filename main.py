@@ -127,7 +127,12 @@ df_final['Ranking'] = df_final.index + 1
 print("\n=== HASIL AKHIR PERANGKINGAN SAW ===")
 print(df_final[['Ranking', 'merk', 'jenis', 'C1_Harga', 'C2_N', 'Skor_Akhir']].head(10))
 
-# Simpan hasil ke CSV baru
+# Simpan hasil perankingan ke CSV di folder 'data'
+ranking_csv_path = 'data/hasil_perankingan.csv'
+df_final.to_csv(ranking_csv_path, index=False)
+print(f"Hasil perankingan diekspor ke {ranking_csv_path}")
+
+# Simpan hasil ke CSV (lama, bisa dihapus jika tidak perlu)
 df_final.to_csv('results/hasil_rekomendasi_pupuk.csv', index=False)
 
 # ==========================================
