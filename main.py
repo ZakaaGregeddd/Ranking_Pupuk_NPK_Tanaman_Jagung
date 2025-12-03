@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
-# ==========================================
+
 # BAGIAN 1: LOAD & PREPROCESSING DATA
-# ==========================================
 def load_and_clean_data(filename):
 	# Baca CSV dengan delimiter titik koma
 	df = pd.read_csv(filename, sep=';')
@@ -33,7 +33,7 @@ def load_and_clean_data(filename):
 
 	return df
 
-import os
+
 # Load Data Real Anda
 df_alternatif = load_and_clean_data('data/data_pupuk.csv')
 
@@ -60,9 +60,9 @@ os.makedirs('results/plots', exist_ok=True)
 print("=== DATA HASIL PREPROCESSING ===")
 print(df_alternatif[['merk', 'C1_Harga', 'C2_N', 'C3_P', 'C4_K', 'C5_Bentuk']].head())
 
-# ==========================================
+
 # BAGIAN 2: METODE AHP (PEMBOBOTAN)
-# ==========================================
+
 # Matriks Perbandingan Berpasangan (Sesuai Logika Fase Vegetatif)
 # Urutan: [Harga, N, P, K, Bentuk]
 # N (C2) dibuat dominan karena Fase Vegetatif.
@@ -95,9 +95,9 @@ RI = 1.12 # Konstanta untuk matriks 5x5
 CR = CI / RI
 print(f"Consistency Ratio (CR): {CR:.4f} (Valid jika < 0.1)")
 
-# ==========================================
+
 # BAGIAN 3: METODE SAW (PERANGKINGAN)
-# ==========================================
+
 # 1. Normalisasi Matriks
 # C1 = Cost (Min/Nilai), C2-C5 = Benefit (Nilai/Max)
 df_norm = df_alternatif.copy()
@@ -135,9 +135,7 @@ print(f"Hasil perankingan diekspor ke {ranking_csv_path}")
 # Simpan hasil ke CSV (lama, bisa dihapus jika tidak perlu)
 df_final.to_csv('results/hasil_rekomendasi_pupuk.csv', index=False)
 
-# ==========================================
 # BAGIAN 4: VISUALISASI DATA (GRAFIK)
-# ==========================================
 sns.set_style("whitegrid")
 
 # Grafik 1: Bobot Kriteria AHP (Pie Chart)
